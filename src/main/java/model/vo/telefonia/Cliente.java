@@ -32,7 +32,7 @@ public class Cliente {
 		return idCliente;
 	}
 
-	public void setIdCliente(Integer id) {
+	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
 	}
 	
