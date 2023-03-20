@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.dao.Banco;
 import model.vo.telefonia.EnderecoVO;
@@ -54,9 +55,12 @@ public class EnderecoDAO {
 		return novoEndereco;
 	}
 
-	// UPDATE ENDERECO
-	// SET CEP=?, RUA=?, NUMERO=?, BAIRRO=?, CIDADE=?, ESTADO=?
-	// WHERE ID = ?
+	/**
+	 * Atualiza os dados de um endereço no banco
+	 * 
+	 * @param enderecoEditado
+	 * @return boolean que informa se a atualização foi feita ou não
+	 */
 	public boolean atualizar(EnderecoVO enderecoEditado) {
 		boolean atualizou = false;
 		Connection conexao = Banco.getConnection();
@@ -87,7 +91,12 @@ public class EnderecoDAO {
 		return atualizou;
 	}
 
-	// CONSULTAR POR ID
+	/**
+	 * Consulta um endereço no banco
+	 * 
+	 * @param id do endereço que se deseja consultar
+	 * @return um endereço
+	 */
 	public EnderecoVO consultarPorId(int id) {
 		EnderecoVO enderecoConsultado = null;
 		Connection conexao = Banco.getConnection();
@@ -97,50 +106,74 @@ public class EnderecoDAO {
 			query.setInt(1, id);
 			ResultSet resultado = query.executeQuery();
 			if (resultado.next()) {
-				enderecoConsultado = new EnderecoVO();
-				enderecoConsultado.setId(resultado.getInt("id"));
-				enderecoConsultado.setCep(resultado.getString("cep"));
-				enderecoConsultado.setRua(resultado.getString("rua"));
-				enderecoConsultado.setBairro(resultado.getString("bairro"));
-				enderecoConsultado.setNumero(resultado.getString("numero"));
-				enderecoConsultado.setCidade(resultado.getString("cidade"));
-				enderecoConsultado.setEstado(resultado.getString("estado"));
+				enderecoConsultado = converterDeResultSetParaEntidade(resultado);
 			}
 
 		} catch (SQLException e) {
 			System.out.println("Erro ao buscar endereço com id: " + id + "\n Causa" + e.getMessage());
+		} finally {
+			Banco.closeStatement(query);
+			Banco.closeConnection(conexao);
 		}
 		return enderecoConsultado;
 	}
-	
-	// CONSULTAR TODOS
-//		public List EnderecoVO consultarTodos(int id) {
-//			EnderecoVO enderecoConsultado = null;
-//			Connection conexao = Banco.getConnection();
-//			String sql = " SELECT * FROM ENDERECO ";
-//			PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
-//			try {
-//				query.setInt(1, id);
-//				ResultSet resultado = query.executeQuery();
-//				if (resultado.next()) {
-//					do {
-//						enderecoConsultado = new EnderecoVO();
-//					enderecoConsultado.setId(resultado.getInt("id"));
-//					enderecoConsultado.setCep(resultado.getString("cep"));
-//					enderecoConsultado.setRua(resultado.getString("rua"));
-//					enderecoConsultado.setBairro(resultado.getString("bairro"));
-//					enderecoConsultado.setNumero(resultado.getString("numero"));
-//					enderecoConsultado.setCidade(resultado.getString("cidade"));
-//					enderecoConsultado.setEstado(resultado.getString("estado"));
-//				} while()
-//
-//			} catch (SQLException e) {
-//				System.out.println("Erro ao buscar endereços" + "\n Causa" + e.getMessage());
-//			}
-//			return enderecoConsultado;
-//		}
 
-	// DELETE
+	/**
+	 * Consulta todos os endereço contidos no banco
+	 * 
+	 * @param não há parâmetro
+	 * @return lista de endereços ArrayList<EnderecoVO>
+	 */
+	public ArrayList<EnderecoVO> consultarTodos() {
+		ArrayList<EnderecoVO> listaEnderecosVO = new ArrayList<EnderecoVO>();
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM ENDERECO ";
+		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+
+		try {
+			ResultSet resultado = query.executeQuery();
+			while (resultado.next()) {
+				EnderecoVO enderecoConsultado = converterDeResultSetParaEntidade(resultado);
+
+				listaEnderecosVO.add(enderecoConsultado);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar todos os endereços" + "\n Causa" + e.getMessage());
+		} finally {
+			Banco.closeStatement(query);
+			Banco.closeConnection(conexao);
+		}
+		return listaEnderecosVO;
+	}
+
+	/**
+	 * Chama as entidades necessárias para a criação de um objeto endereço
+	 * 
+	 * Método feito para que as consultas diminuam a quantidade de linhas, visto q
+	 * ambas (por id e todos) possuem este mesmo trecho de código
+	 * 
+	 * @param resultado
+	 * @return enderecoConsultado
+	 */
+	private EnderecoVO converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
+		EnderecoVO enderecoConsultado = new EnderecoVO();
+		enderecoConsultado.setId(resultado.getInt("id"));
+		enderecoConsultado.setCep(resultado.getString("cep"));
+		enderecoConsultado.setRua(resultado.getString("rua"));
+		enderecoConsultado.setBairro(resultado.getString("bairro"));
+		enderecoConsultado.setNumero(resultado.getString("numero"));
+		enderecoConsultado.setCidade(resultado.getString("cidade"));
+		enderecoConsultado.setEstado(resultado.getString("estado"));
+		return enderecoConsultado;
+	}
+
+	/**
+	 * Deleta um endereço no banco
+	 * 
+	 * @param id do endereço que se deseja deletar
+	 * @return boolean que informa se o endereço foi excluído
+	 */
 	public boolean excluir(int id) {
 		boolean excluiu = false;
 

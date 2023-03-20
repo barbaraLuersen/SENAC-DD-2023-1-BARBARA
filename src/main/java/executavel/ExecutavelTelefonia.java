@@ -36,6 +36,9 @@ public class ExecutavelTelefonia {
 
 		// Consultar endereço por id
 
+		// Consultar todos os endereços
+		EnderecoDAO 
+		
 		// Deletar endereço
 
 		// ----------TELEFONES----------
