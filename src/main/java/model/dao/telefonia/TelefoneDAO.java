@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.dao.Banco;
+import model.dao.BancoTelefonia;
 import model.vo.telefonia.TelefoneVO;
 
 public class TelefoneDAO {
@@ -24,9 +24,9 @@ public class TelefoneDAO {
 	// INSERIR
 	public TelefoneVO inserir(TelefoneVO novoTelefone) {
 		// CONECTAR COM BANCO
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " INSERT INTO TELEFONE (DDD, NUMERO, ATIVO, MOVEL, ID_CLIENTE)" + "	VALUES (?,?,?,?,?) ";
-		PreparedStatement query = Banco.getPreparedStatementWithPk(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatementWithPk(conexao, sql);
 
 		// EXECUTAR O INSERT
 		try {
@@ -52,8 +52,8 @@ public class TelefoneDAO {
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir telefone. \nCausa: " + e.getMessage());
 		} finally {
-			Banco.closePreparedStatement(query);
-			Banco.closeConnection(conexao);
+			BancoTelefonia.closePreparedStatement(query);
+			BancoTelefonia.closeConnection(conexao);
 		}
 		// FECHAR A CONEXAO
 		return novoTelefone;
@@ -70,10 +70,10 @@ public class TelefoneDAO {
 	// WHERE ID = ?
 	public boolean atualizar(TelefoneVO telefoneEditado) {
 		boolean atualizou = false;
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " UPDATE TELEFONE " + "	SET IDCLIENTE = ?, DDD = ?, NUMERO = ?, ATIVO = ?, MODEL = ? "
 				+ "	WHERE ID = ?";
-		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setString(1, telefoneEditado.getDdd());
 			query.setString(2, telefoneEditado.getNumero());
@@ -90,8 +90,8 @@ public class TelefoneDAO {
 		} catch (SQLException excecao) {
 			System.out.println("Erro ao atualizar telefone. " + "\n Causa: " + excecao.getMessage());
 		} finally {
-			Banco.closePreparedStatement(query);
-			Banco.closeConnection(conexao);
+			BancoTelefonia.closePreparedStatement(query);
+			BancoTelefonia.closeConnection(conexao);
 		}
 		return atualizou;
 	}
@@ -105,9 +105,9 @@ public class TelefoneDAO {
 	// CONSULTAR POR ID
 	public TelefoneVO consultarPorId(int id) {
 		TelefoneVO telefoneConsultado = null;
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE " + " WHERE ID = ? ";
-		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, id);
 			ResultSet resultado = query.executeQuery();
@@ -130,9 +130,9 @@ public class TelefoneDAO {
 	 */
 	public ArrayList<TelefoneVO> consultarTodos() {
 		ArrayList<TelefoneVO> listaTelefonesVO = new ArrayList<TelefoneVO>();
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE ";
-		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
 		try {
 			ResultSet resultado = query.executeQuery();
@@ -145,8 +145,8 @@ public class TelefoneDAO {
 		} catch (SQLException e) {
 			System.out.println("Erro ao buscar todos os telefones" + "\n Causa" + e.getMessage());
 		} finally {
-			Banco.closeStatement(query);
-			Banco.closeConnection(conexao);
+			BancoTelefonia.closeStatement(query);
+			BancoTelefonia.closeConnection(conexao);
 		}
 		return listaTelefonesVO;
 	}
@@ -160,9 +160,9 @@ public class TelefoneDAO {
 	 */
 	public ArrayList<TelefoneVO> consultarPorIdCliente(Integer id) {
 		ArrayList<TelefoneVO> listaTelefonesVO = new ArrayList<TelefoneVO>();
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE " + "WHERE ID_CLIENTE = ?";
-		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
 		try {
 			query.setInt(1, 0);
@@ -175,8 +175,8 @@ public class TelefoneDAO {
 			System.out.println(
 					"Erro ao buscar todos os telefones pelo id do cliente informado" + "\n Causa" + e.getMessage());
 		} finally {
-			Banco.closePreparedStatement(query);
-			Banco.closeConnection(conexao);
+			BancoTelefonia.closePreparedStatement(query);
+			BancoTelefonia.closeConnection(conexao);
 		}
 		return listaTelefonesVO;
 	}
@@ -211,9 +211,9 @@ public class TelefoneDAO {
 	public boolean excluir(int id) {
 		boolean excluiu = false;
 
-		Connection conexao = Banco.getConnection();
+		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " DELETE FROM TELEFONE " + " WHERE ID = ? ";
-		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, id);
 
@@ -223,8 +223,8 @@ public class TelefoneDAO {
 		} catch (SQLException e) {
 			System.out.println("Erro ao excluir telefone com id: " + id + "\n Causa" + e.getMessage());
 		} finally {
-			Banco.closePreparedStatement(query);
-			Banco.closeConnection(conexao);
+			BancoTelefonia.closePreparedStatement(query);
+			BancoTelefonia.closeConnection(conexao);
 		}
 		return excluiu;
 	}

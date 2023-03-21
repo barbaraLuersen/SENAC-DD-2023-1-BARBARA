@@ -1,4 +1,4 @@
-package model.dao;
+package model.dao.gerenciaDeVacinas;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,16 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Banco {
-
+public class BancoGerenciaDeVacinas {
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; // MYSQL versao 8
 	// private static final String DRIVER = "com.mysql.jdbc.Driver"; //MYSQL versão
 	// 5
-	private static final String BANCODADOS = "exemplos";
+	private static final String BANCODADOS = "DBGERVACINAS";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS
 			+ "?useTimezone=true&serverTimezone=UTC";
 	private static final String USER = "root";
-	private static final String PASSWORD = "root";
+	private static final String PASSWORD = "admin";
 
 	public static Connection getConnection() {
 		try {
