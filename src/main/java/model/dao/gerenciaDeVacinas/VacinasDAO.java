@@ -34,8 +34,8 @@ public class VacinasDAO {
 		try {
 			query.setInt(1, novaVacina.getIdVacina());
 			query.setString(2, novaVacina.getPaisDeOrigem());
-			// query.setInt(3, novaVacina.getEstagioDaPesquisa());
-			// query.setDate(4, novaVacina.getDataInicio());
+			query.setInt(3, novaVacina.getEstagioDaPesquisa().getValor());
+			query.setObject(4, novaVacina.getDataInicio());
 			query.setString(5, novaVacina.getNomePesquisador());
 			query.execute();
 

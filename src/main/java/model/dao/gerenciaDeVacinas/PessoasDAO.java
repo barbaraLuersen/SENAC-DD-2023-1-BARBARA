@@ -31,10 +31,10 @@ public class PessoasDAO {
 		try {
 			query.setInt(1, novaPessoa.getIdPessoa());
 			query.setString(2, novaPessoa.getNome());
-			// query.setInt(3, novaPessoa.getDataNascimento());
+			query.setObject(3, novaPessoa.getDataNascimento());
 			query.setBoolean(4, novaPessoa.isSexo());
 			query.setString(5, novaPessoa.getCpf());
-			// query.setString(6, novaPessoa.getTipoDePessoa());
+		    query.setInt(6, novaPessoa.getTipoDePessoa().getValor());
 			query.execute();
 
 			// Preencher o id gerado no banco no objeto
