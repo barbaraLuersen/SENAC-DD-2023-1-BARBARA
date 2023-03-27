@@ -2,17 +2,17 @@ package model.vo.telefonia;
 
 import java.util.List;
 
-public class ClienteVO {
+public class Cliente {
 	// Atributos
 	private Integer idCliente;
 	private String nome;
 	private String cpf;
-	private List<TelefoneVO> telefones;
+	private List<Telefone> telefones;
 	private boolean ativo;
-	private EnderecoVO endereco;
+	private Endereco endereco;
 
 	// Construtores
-	public ClienteVO(Integer idCliente, String nome, String cpf, List<TelefoneVO> telefones, boolean ativo, EnderecoVO endereco) {
+	public Cliente(Integer idCliente, String nome, String cpf, List<Telefone> telefones, boolean ativo, Endereco endereco) {
 		super();
 		this.idCliente = idCliente;
 		this.nome = nome;
@@ -22,7 +22,7 @@ public class ClienteVO {
 		this.endereco = endereco;
 	}
 
-	public ClienteVO() {
+	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -52,11 +52,11 @@ public class ClienteVO {
 		this.cpf = cpf;
 	}
 
-	public List<TelefoneVO> getTelefones() {
+	public List<Telefone> getTelefones() {
 		return telefones;
 	}
 
-	public void setTelefones(List<TelefoneVO> telefones) {
+	public void setTelefones(List<Telefone> telefones) {
 		this.telefones = telefones;
 	}
 
@@ -68,11 +68,11 @@ public class ClienteVO {
 		this.ativo = ativo;
 	}
 
-	public EnderecoVO getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(EnderecoVO endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
 

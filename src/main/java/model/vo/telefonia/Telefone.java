@@ -1,6 +1,6 @@
 package model.vo.telefonia;
 
-public class TelefoneVO {
+public class Telefone {
 	// Atributos
 	private Integer id;
 	private Integer idCliente;
@@ -10,7 +10,7 @@ public class TelefoneVO {
 	private boolean movel;
 
 	// Construtores
-	public TelefoneVO(Integer id, Integer idCliente, String ddd, String numero, boolean ativo, boolean movel) {
+	public Telefone(Integer id, Integer idCliente, String ddd, String numero, boolean ativo, boolean movel) {
 		super();
 		this.id = id;
 		this.idCliente = idCliente;
@@ -20,7 +20,7 @@ public class TelefoneVO {
 		this.movel = movel;
 	}
 
-	public TelefoneVO() {
+	public Telefone() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

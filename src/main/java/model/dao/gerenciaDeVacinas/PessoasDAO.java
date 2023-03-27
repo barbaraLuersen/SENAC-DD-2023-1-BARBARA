@@ -6,10 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import model.dao.BancoTelefonia;
 import model.vo.gerenciaDeVacinas.Pessoas;
 import model.vo.gerenciaDeVacinas.TipoDePessoa;
-import model.vo.telefonia.EnderecoVO;
 
 public class PessoasDAO {
 	// CRUD (Create, Read, Update, Delete)
@@ -57,7 +55,7 @@ public class PessoasDAO {
 		// Fechar a conexão
 		return novaPessoa;
 	}
-	
+
 	/**
 	 * Atualiza os dados de uma pessoa no banco
 	 * 
@@ -66,25 +64,26 @@ public class PessoasDAO {
 	 */
 	public boolean atualizar(Pessoas pessoaEditada) {
 		boolean atualizou = false;
-		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " UPDATE PESSOAS " + " NOME = ?, DT_NASCIMENTO = ?, SEXO = ?, CPF = ?, VALOR = ? "
-				+ " WHERE ID = ? ";
-		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
+		Connection conexao = BancoGerenciaDeVacinas.getConnection();
+		String sql = " UPDATE PESSOAS " + " SET NOME = ?, DT_NASCIMENTO = ?, SEXO = ?, CPF = ?, VALOR = ? "
+				+ " WHERE ID_PESSOA = ? ";
+		PreparedStatement query = BancoGerenciaDeVacinas.getPreparedStatement(conexao, sql);
 		try {
 			query.setString(1, pessoaEditada.getNome());
 			query.setObject(2, pessoaEditada.getDataNascimento());
 			query.setString(3, String.valueOf(pessoaEditada.isSexo()));
 			query.setString(4, pessoaEditada.getCpf());
 			query.setInt(5, pessoaEditada.getTipoDePessoa().getValor());
+			query.setInt(6, pessoaEditada.getIdPessoa());
 
 			int quantidadeLinhasAtualizadas = query.executeUpdate();
 			if (quantidadeLinhasAtualizadas > 0) {
-				// se fosse igual a zero isso indicaria que não houve atualização em nenhuma das
-				// variaveis
+				// se fosse igual a zero isso indicaria que não houve
+				// atualização em nenhuma das variaveis
 				atualizou = true;
 			}
 		} catch (SQLException excecao) {
-			System.out.println("Erro ao atualizar pessoa. " + "\n Causa: " + excecao.getMessage());
+			System.out.println("\nErro ao atualizar pessoa. " + "\nCausa: " + excecao.getMessage());
 		} finally {
 			BancoGerenciaDeVacinas.closePreparedStatement(query);
 			BancoGerenciaDeVacinas.closeConnection(conexao);
@@ -93,16 +92,16 @@ public class PessoasDAO {
 	}
 
 	/**
-	 * Consulta uma pessoa no banco
+	 * Consulta um registro de pessoa no banco
 	 * 
 	 * @param id da pessoa que se deseja consultar
 	 * @return uma pessoa
 	 */
 	public Pessoas consultarPorId(int idPessoa) {
 		Pessoas pessoaConsultada = null;
-		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " SELECT * FROM PESSOAS " + " WHERE ID = ? ";
-		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
+		Connection conexao = BancoGerenciaDeVacinas.getConnection();
+		String sql = " SELECT * FROM PESSOAS " + " WHERE ID_PESSOA = ? ";
+		PreparedStatement query = BancoGerenciaDeVacinas.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, idPessoa);
 			ResultSet resultado = query.executeQuery();
@@ -111,7 +110,7 @@ public class PessoasDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar pessoa com id: " + idPessoa + "\n Causa" + e.getMessage());
+			System.out.println("\nErro ao buscar pessoa com id: " + idPessoa + "\nCausa: " + e.getMessage());
 		} finally {
 			BancoGerenciaDeVacinas.closePreparedStatement(query);
 			BancoGerenciaDeVacinas.closeConnection(conexao);
@@ -119,34 +118,34 @@ public class PessoasDAO {
 		return pessoaConsultada;
 	}
 
-//	/**
-//	 * Consulta todos os endereço contidos no banco
-//	 * 
-//	 * @param não há parâmetro
-//	 * @return lista de endereços ArrayList<EnderecoVO>
-//	 */
-//	public ArrayList<EnderecoVO> consultarTodos() {
-//		ArrayList<EnderecoVO> listaEnderecosVO = new ArrayList<EnderecoVO>();
-//		Connection conexao = BancoTelefonia.getConnection();
-//		String sql = " SELECT * FROM ENDERECO ";
-//		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
-//
-//		try {
-//			ResultSet resultado = query.executeQuery();
-//			while (resultado.next()) {
-//				EnderecoVO enderecoConsultado = converterDeResultSetParaEntidade(resultado);
-//
-//				listaEnderecosVO.add(enderecoConsultado);
-//			}
-//
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao buscar todos os endereços" + "\n Causa" + e.getMessage());
-//		} finally {
-//			BancoTelefonia.closeStatement(query);
-//			BancoTelefonia.closeConnection(conexao);
-//		}
-//		return listaEnderecosVO;
-//	}
+	/**
+	 * Consulta todos os registros da entidade pessoa contidos no banco
+	 * 
+	 * @param não há parâmetro
+	 * @return lista de pessoas ArrayList<Pessoas>
+	 */
+	public ArrayList<Pessoas> consultarTodas() {
+		ArrayList<Pessoas> listaPessoas = new ArrayList<Pessoas>();
+		Connection conexao = BancoGerenciaDeVacinas.getConnection();
+		String sql = " SELECT * FROM PESSOAS ";
+		PreparedStatement query = BancoGerenciaDeVacinas.getPreparedStatement(conexao, sql);
+
+		try {
+			ResultSet resultado = query.executeQuery();
+			while (resultado.next()) {
+				Pessoas pessoaConsultada = converterDeResultSetParaEntidade(resultado);
+
+				listaPessoas.add(pessoaConsultada);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("\nErro ao buscar lista de pessoas" + "\nCausa: " + e.getMessage());
+		} finally {
+			BancoGerenciaDeVacinas.closePreparedStatement(query);
+			BancoGerenciaDeVacinas.closeConnection(conexao);
+		}
+		return listaPessoas;
+	}
 
 	/**
 	 * Chama as entidades necessárias para a criação de um objeto endereço
@@ -155,7 +154,7 @@ public class PessoasDAO {
 	 * ambas (por id e todos) possuem este mesmo trecho de código
 	 * 
 	 * @param resultado
-	 * @return enderecoConsultado
+	 * @return pessoaConsultada
 	 */
 	private Pessoas converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
 		Pessoas pessoaConsultada = new Pessoas();
@@ -168,30 +167,30 @@ public class PessoasDAO {
 		return pessoaConsultada;
 	}
 
-//	/**
-//	 * Deleta um endereço no banco
-//	 * 
-//	 * @param id do endereço que se deseja deletar
-//	 * @return boolean que informa se o endereço foi excluído
-//	 */
-//	public boolean excluir(int id) {
-//		boolean excluiu = false;
-//
-//		Connection conexao = BancoTelefonia.getConnection();
-//		String sql = " DELETE FROM ENDERECO " + " WHERE ID = ? ";
-//		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
-//		try {
-//			query.setInt(1, id);
-//
-//			int quantidadeLinhasAtualizadas = query.executeUpdate();
-//			excluiu = quantidadeLinhasAtualizadas > 0;
-//
-//		} catch (SQLException e) {
-//			System.out.println("Erro ao excluir endereço com id: " + id + "\n Causa" + e.getMessage());
-//		} finally {
-//			BancoTelefonia.closePreparedStatement(query);
-//			BancoTelefonia.closeConnection(conexao);
-//		}
-//		return excluiu;
-//	}
+	/**
+	 * Deleta um endereço no banco
+	 * 
+	 * @param id do endereço que se deseja deletar
+	 * @return boolean que informa se o endereço foi excluído
+	 */
+	public boolean excluir(int idPessoa) {
+		boolean excluiu = false;
+
+		Connection conexao = BancoGerenciaDeVacinas.getConnection();
+		String sql = " DELETE FROM PESSOAS " + " WHERE ID_PESSOA = ? ";
+		PreparedStatement query = BancoGerenciaDeVacinas.getPreparedStatement(conexao, sql);
+		try {
+			query.setInt(1, idPessoa);
+
+			int quantidadeLinhasAtualizadas = query.executeUpdate();
+			excluiu = quantidadeLinhasAtualizadas > 0;
+
+		} catch (SQLException e) {
+			System.out.println("\nErro ao excluir pessoa com id: " + idPessoa + "\nCausa: " + e.getMessage());
+		} finally {
+			BancoGerenciaDeVacinas.closePreparedStatement(query);
+			BancoGerenciaDeVacinas.closeConnection(conexao);
+		}
+		return excluiu;
+	}
 }

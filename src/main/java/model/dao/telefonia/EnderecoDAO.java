@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.dao.BancoTelefonia;
-import model.vo.telefonia.EnderecoVO;
+import model.vo.telefonia.Endereco;
 
 public class EnderecoDAO {
 //INSERT
@@ -21,7 +21,7 @@ public class EnderecoDAO {
 	 * @return o endereco inserido com a chave primária gerada
 	 */
 	// INSERT
-	public EnderecoVO inserir(EnderecoVO novoEndereco) {
+	public Endereco inserir(Endereco novoEndereco) {
 		// Conectar ao banco
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " INSERT INTO ENDERECO (RUA, CEP, BAIRRO, CIDADE, ESTADO, NUMERO)" + " VALUES (?,?,?,?,?,?)";
@@ -45,7 +45,7 @@ public class EnderecoDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao inserir endereço. \nCausa: " + e.getMessage());
+			System.out.println("\nErro ao inserir endereço. \nCausa: " + e.getMessage());
 		} finally {
 			BancoTelefonia.closePreparedStatement(query);
 			BancoTelefonia.closeConnection(conexao);
@@ -61,7 +61,7 @@ public class EnderecoDAO {
 	 * @param enderecoEditado
 	 * @return boolean que informa se a atualização foi feita ou não
 	 */
-	public boolean atualizar(EnderecoVO enderecoEditado) {
+	public boolean atualizar(Endereco enderecoEditado) {
 		boolean atualizou = false;
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " UPDATE ENDERECO " + " SET CEP = ?, RUA = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ? "
@@ -83,7 +83,7 @@ public class EnderecoDAO {
 				atualizou = true;
 			}
 		} catch (SQLException excecao) {
-			System.out.println("Erro ao atualizar endereço. " + "\n Causa: " + excecao.getMessage());
+			System.out.println("\nErro ao atualizar endereço. " + "\n Causa: " + excecao.getMessage());
 		} finally {
 			BancoTelefonia.closePreparedStatement(query);
 			BancoTelefonia.closeConnection(conexao);
@@ -97,8 +97,8 @@ public class EnderecoDAO {
 	 * @param id do endereço que se deseja consultar
 	 * @return um endereço
 	 */
-	public EnderecoVO consultarPorId(int id) {
-		EnderecoVO enderecoConsultado = null;
+	public Endereco consultarPorId(int id) {
+		Endereco enderecoConsultado = null;
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM ENDERECO " + " WHERE ID = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -110,7 +110,7 @@ public class EnderecoDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar endereço com id: " + id + "\n Causa" + e.getMessage());
+			System.out.println("\nErro ao buscar endereço com id: " + id + "\n Causa" + e.getMessage());
 		} finally {
 			BancoTelefonia.closeStatement(query);
 			BancoTelefonia.closeConnection(conexao);
@@ -124,8 +124,8 @@ public class EnderecoDAO {
 	 * @param não há parâmetro
 	 * @return lista de endereços ArrayList<EnderecoVO>
 	 */
-	public ArrayList<EnderecoVO> consultarTodos() {
-		ArrayList<EnderecoVO> listaEnderecosVO = new ArrayList<EnderecoVO>();
+	public ArrayList<Endereco> consultarTodos() {
+		ArrayList<Endereco> listaEnderecosVO = new ArrayList<Endereco>();
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM ENDERECO ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -133,13 +133,13 @@ public class EnderecoDAO {
 		try {
 			ResultSet resultado = query.executeQuery();
 			while (resultado.next()) {
-				EnderecoVO enderecoConsultado = converterDeResultSetParaEntidade(resultado);
+				Endereco enderecoConsultado = converterDeResultSetParaEntidade(resultado);
 
 				listaEnderecosVO.add(enderecoConsultado);
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar todos os endereços" + "\n Causa" + e.getMessage());
+			System.out.println("\nErro ao buscar endereços" + "\n Causa" + e.getMessage());
 		} finally {
 			BancoTelefonia.closeStatement(query);
 			BancoTelefonia.closeConnection(conexao);
@@ -156,8 +156,8 @@ public class EnderecoDAO {
 	 * @param resultado
 	 * @return enderecoConsultado
 	 */
-	private EnderecoVO converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
-		EnderecoVO enderecoConsultado = new EnderecoVO();
+	private Endereco converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
+		Endereco enderecoConsultado = new Endereco();
 		enderecoConsultado.setId(resultado.getInt("id"));
 		enderecoConsultado.setCep(resultado.getString("cep"));
 		enderecoConsultado.setRua(resultado.getString("rua"));

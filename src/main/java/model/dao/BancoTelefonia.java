@@ -12,11 +12,11 @@ public class BancoTelefonia {
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver"; // MYSQL versao 8
 	// private static final String DRIVER = "com.mysql.jdbc.Driver"; //MYSQL versão
 	// 5
-	private static final String BANCODADOS = "exemplos";
+	private static final String BANCODADOS = "DBTELEFONIA";
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS
 			+ "?useTimezone=true&serverTimezone=UTC";
 	private static final String USER = "root";
-	private static final String PASSWORD = "root";
+	private static final String PASSWORD = "admin";
 
 	public static Connection getConnection() {
 		try {

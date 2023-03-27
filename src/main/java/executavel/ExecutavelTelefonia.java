@@ -1,20 +1,19 @@
 package executavel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.dao.telefonia.EnderecoDAO;
 import model.dao.telefonia.TelefoneDAO;
-import model.vo.telefonia.ClienteVO;
-import model.vo.telefonia.EnderecoVO;
-import model.vo.telefonia.TelefoneVO;
+import model.vo.telefonia.Cliente;
+import model.vo.telefonia.Endereco;
+import model.vo.telefonia.Telefone;
 
 public class ExecutavelTelefonia {
 	public static void main(String[] args) {
-		
+
 		// ----------ENDEREÇOS----------
 		// Inserir endereços
-		EnderecoVO endereco1 = new EnderecoVO(null, "88000123", "Mauro Ramos", "10", "Centro", "Florianópolis", "SC");
+		Endereco endereco1 = new Endereco(null, "88000123", "Mauro Ramos", "10", "Centro", "Florianópolis", "SC");
 
 		EnderecoDAO dbaDeEnderecos = new EnderecoDAO();
 		dbaDeEnderecos.inserir(endereco1);
@@ -27,7 +26,7 @@ public class ExecutavelTelefonia {
 
 		// Atualizar endereço
 		boolean atualizouEnd = dbaDeEnderecos.atualizar(endereco1);
-		endereco1 = dbaDeEnderecos.consultarPorId(2);
+		endereco1 = dbaDeEnderecos.consultarPorId(1);
 		if (atualizouEnd) {
 			System.out.println("Endereço foi atualizado");
 		} else {
@@ -35,46 +34,67 @@ public class ExecutavelTelefonia {
 		}
 
 		// Consultar endereço por id
-
-		// Consultar todos os endereços
-		//EnderecoDAO 
+		Endereco endereco = dbaDeEnderecos.consultarPorId(1);
 		
+		if (endereco.getId()>0 && endereco.getId() != null) {
+			System.out.println(endereco);
+		} else {
+			System.out.println("Erro ao consultar endereço por id");
+		}
+		
+		// Consultar todos os endereços
+		List<Endereco> enderecos = dbaDeEnderecos.consultarTodos();
+
+		System.out.println("=============== Todos os endereços ===============");
+		for (Endereco e : enderecos) {
+			System.out.println(e);
+		}
+
 		// Deletar endereço
 
 		// ----------TELEFONES----------
 		// Criando telefones
-//		TelefoneVO telefone1 = new TelefoneVO(null, null, "45", "99735361", false, true);
-//		TelefoneVO telefone2 = new TelefoneVO(null, 5, "45", "99735362", false, true);
-//
-//		// Inserindo telefones
-//		TelefoneDAO dbaDeTelefones = new TelefoneDAO();
-//		dbaDeTelefones.inserir(telefone1);
-//
-//		if (telefone1.getId() != null) {
-//			System.out.println("Novo telefone cadastrado");
-//		} else {
-//			System.out.println("Erro ao cadastrar telefone");
-//		}
-//
-//		dbaDeTelefones.inserir(telefone2);
-//		if (telefone2.getId() != null) {
-//			System.out.println("Novo telefone cadastrado");
-//		} else {
-//			System.out.println("Erro ao cadastrar telefone");
-//		}
-//
-//		// Atualizar telefones
-//		boolean atualizouTel = dbaDeTelefones.atualizar(telefone1);
-//		endereco1 = dbaDeEnderecos.consultarPorId(2);
-//		if (atualizouTel) {
-//			System.out.println("Telefone foi atualizado");
-//		} else {
-//			System.out.println("Erro ao atualizar telefone");
-//		}
+		Telefone telefone1 = new Telefone(null, null, "45", "99735361", false, true);
+		Telefone telefone2 = new Telefone(null, 5, "45", "99735362", false, true);
 
-		// Consultar telefone por id
+		// Inserindo telefones
+		TelefoneDAO dbaDeTelefones = new TelefoneDAO();
+		dbaDeTelefones.inserir(telefone1);
 
-		// Deletar telefone
+		if (telefone1.getId() != null) {
+			System.out.println("Novo telefone cadastrado");
+		} else {
+			System.out.println("Erro ao cadastrar telefone");
+		}
+
+		dbaDeTelefones.inserir(telefone2);
+		if (telefone2.getId() != null) {
+			System.out.println("Novo telefone cadastrado");
+		} else {
+			System.out.println("Erro ao cadastrar telefone");
+		}
+
+		// Atualizando telefones
+		boolean atualizouTel = dbaDeTelefones.atualizar(telefone1);
+		telefone1 = dbaDeTelefones.consultarPorId(2);
+		if (atualizouTel) {
+			System.out.println("Telefone foi atualizado");
+		} else {
+			System.out.println("Erro ao atualizar telefone");
+		}
+
+		// Consultando telefone por id
+		
+		
+		// Consultando todos os telefones
+		List<Telefone> telefones = dbaDeTelefones.consultarTodos();
+
+		System.out.println("=============== Todos os endereços ===============");
+		for (Telefone e : telefones) {
+			System.out.println(e);
+		}
+
+		// Deletando telefone
 
 //------------------------------------------------------------------------
 //		List<Telefone> telefonesDoSocrates = new ArrayList<Telefone>();

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.dao.BancoTelefonia;
-import model.vo.telefonia.TelefoneVO;
+import model.vo.telefonia.Telefone;
 
 public class TelefoneDAO {
 
@@ -22,7 +22,7 @@ public class TelefoneDAO {
 	 * @return o telefone inserido com a chave primária gerada
 	 */
 	// INSERIR
-	public TelefoneVO inserir(TelefoneVO novoTelefone) {
+	public Telefone inserir(Telefone novoTelefone) {
 		// CONECTAR COM BANCO
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " INSERT INTO TELEFONE (DDD, NUMERO, ATIVO, MOVEL, ID_CLIENTE)" + "	VALUES (?,?,?,?,?) ";
@@ -68,7 +68,7 @@ public class TelefoneDAO {
 	// UPDATE TELEFONE
 	// SET ID = ?, IDCLIENTE = ?, DDD = ?, NUMERO = ?, ATIVO = ?, MODEL = ?
 	// WHERE ID = ?
-	public boolean atualizar(TelefoneVO telefoneEditado) {
+	public boolean atualizar(Telefone telefoneEditado) {
 		boolean atualizou = false;
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " UPDATE TELEFONE " + "	SET IDCLIENTE = ?, DDD = ?, NUMERO = ?, ATIVO = ?, MODEL = ? "
@@ -103,8 +103,8 @@ public class TelefoneDAO {
 	 * @return um telefone
 	 */
 	// CONSULTAR POR ID
-	public TelefoneVO consultarPorId(int id) {
-		TelefoneVO telefoneConsultado = null;
+	public Telefone consultarPorId(int id) {
+		Telefone telefoneConsultado = null;
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE " + " WHERE ID = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -128,8 +128,8 @@ public class TelefoneDAO {
 	 * 
 	 * @return lista de telefones ArrayList<EnderecoVO>
 	 */
-	public ArrayList<TelefoneVO> consultarTodos() {
-		ArrayList<TelefoneVO> listaTelefonesVO = new ArrayList<TelefoneVO>();
+	public ArrayList<Telefone> consultarTodos() {
+		ArrayList<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -137,7 +137,7 @@ public class TelefoneDAO {
 		try {
 			ResultSet resultado = query.executeQuery();
 			while (resultado.next()) {
-				TelefoneVO telefoneConsultado = converterDeResultSetParaEntidade(resultado);
+				Telefone telefoneConsultado = converterDeResultSetParaEntidade(resultado);
 
 				listaTelefonesVO.add(telefoneConsultado);
 			}
@@ -158,8 +158,8 @@ public class TelefoneDAO {
 	 * 
 	 * @return lista de telefones ArrayList<EnderecoVO>
 	 */
-	public ArrayList<TelefoneVO> consultarPorIdCliente(Integer id) {
-		ArrayList<TelefoneVO> listaTelefonesVO = new ArrayList<TelefoneVO>();
+	public ArrayList<Telefone> consultarPorIdCliente(Integer id) {
+		ArrayList<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE " + "WHERE ID_CLIENTE = ?";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -168,7 +168,7 @@ public class TelefoneDAO {
 			query.setInt(1, 0);
 			ResultSet resultado = query.executeQuery();
 			while (resultado.next()) {
-				TelefoneVO telefoneConsultado = converterDeResultSetParaEntidade(resultado);
+				Telefone telefoneConsultado = converterDeResultSetParaEntidade(resultado);
 				listaTelefonesVO.add(telefoneConsultado);
 			}
 		} catch (SQLException e) {
@@ -190,8 +190,8 @@ public class TelefoneDAO {
 	 * @param resultado
 	 * @return telefoneConsultado
 	 */
-	private TelefoneVO converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
-		TelefoneVO telefoneConsultado = new TelefoneVO();
+	private Telefone converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
+		Telefone telefoneConsultado = new Telefone();
 		telefoneConsultado.setId(resultado.getInt("id"));
 		telefoneConsultado.setDdd(resultado.getString("ddd"));
 		telefoneConsultado.setNumero(resultado.getString("numero"));

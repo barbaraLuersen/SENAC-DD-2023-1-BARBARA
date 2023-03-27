@@ -73,7 +73,7 @@ public class Pessoas {
 	public void setTipoDePessoa(TipoDePessoa tipoDePessoa) {
 		this.tipoDePessoa = tipoDePessoa;
 	}
-
+	
 	private String validarData(LocalDateTime dataNascimento) {
 		String resultado = "";
 		if (dataNascimento != null) {
@@ -81,5 +81,14 @@ public class Pessoas {
 		}
 		return resultado;
 	}
-
+	
+	public void imprimir() {
+		System.out.printf("\n%3s  %-13s  %-20s  %-7s  %-24s  %-24s  ", 
+				this.idPessoa.byteValue(),
+				this.nome,
+				this.validarData(this.getDataNascimento()),
+				this.sexo,
+				this.cpf, 
+				this.tipoDePessoa);
+	}
 }

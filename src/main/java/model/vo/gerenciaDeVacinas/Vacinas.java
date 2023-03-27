@@ -64,12 +64,20 @@ public class Vacinas {
 	public void setPesquisador(Pessoas pesquisador) {
 		this.pesquisador = pesquisador;
 	}
-
 	private String validarData(LocalDateTime dataInicio) {
 		String resultado = "";
 		if (dataInicio != null) {
 			resultado = dataInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		}
 		return resultado;
+	}
+	
+	public void imprimir() {
+		System.out.printf("\n%3s  %-13s  %-20s  %-7s  %-24s  %-24s  ", 
+				this.idVacina.byteValue(),
+				this.paisDeOrigem,
+				this.estagioDaPesquisa,
+				this.validarData(this.getDataInicio()),
+				this.pesquisador.getIdPessoa());
 	}
 }
