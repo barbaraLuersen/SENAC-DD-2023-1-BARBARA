@@ -37,40 +37,40 @@ public class ExecutavelTelefonia {
 		// Consultar endereço por id
 
 		// Consultar todos os endereços
-		EnderecoDAO 
+		//EnderecoDAO 
 		
 		// Deletar endereço
 
 		// ----------TELEFONES----------
 		// Criando telefones
-		TelefoneVO telefone1 = new TelefoneVO(null, null, "45", "99735361", false, true);
-		TelefoneVO telefone2 = new TelefoneVO(null, 5, "45", "99735362", false, true);
-
-		// Inserindo telefones
-		TelefoneDAO dbaDeTelefones = new TelefoneDAO();
-		dbaDeTelefones.inserir(telefone1);
-
-		if (telefone1.getId() != null) {
-			System.out.println("Novo telefone cadastrado");
-		} else {
-			System.out.println("Erro ao cadastrar telefone");
-		}
-
-		dbaDeTelefones.inserir(telefone2);
-		if (telefone2.getId() != null) {
-			System.out.println("Novo telefone cadastrado");
-		} else {
-			System.out.println("Erro ao cadastrar telefone");
-		}
-
-		// Atualizar telefones
-		boolean atualizouTel = dbaDeTelefones.atualizar(telefone1);
-		endereco1 = dbaDeEnderecos.consultarPorId(2);
-		if (atualizouTel) {
-			System.out.println("Telefone foi atualizado");
-		} else {
-			System.out.println("Erro ao atualizar telefone");
-		}
+//		TelefoneVO telefone1 = new TelefoneVO(null, null, "45", "99735361", false, true);
+//		TelefoneVO telefone2 = new TelefoneVO(null, 5, "45", "99735362", false, true);
+//
+//		// Inserindo telefones
+//		TelefoneDAO dbaDeTelefones = new TelefoneDAO();
+//		dbaDeTelefones.inserir(telefone1);
+//
+//		if (telefone1.getId() != null) {
+//			System.out.println("Novo telefone cadastrado");
+//		} else {
+//			System.out.println("Erro ao cadastrar telefone");
+//		}
+//
+//		dbaDeTelefones.inserir(telefone2);
+//		if (telefone2.getId() != null) {
+//			System.out.println("Novo telefone cadastrado");
+//		} else {
+//			System.out.println("Erro ao cadastrar telefone");
+//		}
+//
+//		// Atualizar telefones
+//		boolean atualizouTel = dbaDeTelefones.atualizar(telefone1);
+//		endereco1 = dbaDeEnderecos.consultarPorId(2);
+//		if (atualizouTel) {
+//			System.out.println("Telefone foi atualizado");
+//		} else {
+//			System.out.println("Erro ao atualizar telefone");
+//		}
 
 		// Consultar telefone por id
 

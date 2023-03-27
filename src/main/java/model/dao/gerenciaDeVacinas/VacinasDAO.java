@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import model.vo.gerenciaDeVacinas.Vacinas;
-import model.vo.telefonia.EnderecoVO;
 
 public class VacinasDAO {
 //CRUD (Create, Read, Update, Delete)
@@ -22,10 +21,10 @@ public class VacinasDAO {
 	 * @return a vacina inserida com a chave primária gerada
 	 */
 
-	public Vacinas cadasttrar(Vacinas novaVacina) {
+	public Vacinas cadastrar(Vacinas novaVacina) {
 		// Conectar ao banco
 		Connection conexao = BancoGerenciaDeVacinas.getConnection();
-		String sql = " INSERT INTO VACINA (ID_VACINA, PAIS_ORIGEM, ESTAGIO, DT_INICIO, NOME_PESQUISADOR)"
+		String sql = " INSERT INTO VACINAS (ID_VACINA, PAIS_ORIGEM, VALOR, DT_INICIO, ID_PESSOA)"
 				+ " VALUES (?,?,?,?,?)";
 		PreparedStatement query = BancoGerenciaDeVacinas.getPreparedStatementWithPk(conexao, sql);
 // PreparedStatement é passagem por parâmetro e previne sql injection
@@ -36,7 +35,7 @@ public class VacinasDAO {
 			query.setString(2, novaVacina.getPaisDeOrigem());
 			query.setInt(3, novaVacina.getEstagioDaPesquisa().getValor());
 			query.setObject(4, novaVacina.getDataInicio());
-			query.setString(5, novaVacina.getNomePesquisador());
+			query.setInt(5, novaVacina.getPesquisador().getIdPessoa());
 			query.execute();
 
 			// Preencher o id gerado no banco no objeto

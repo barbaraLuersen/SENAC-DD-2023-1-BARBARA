@@ -9,16 +9,16 @@ public class Vacinas {
 	private String paisDeOrigem;
 	private EstagioDaPesquisa estagioDaPesquisa;
 	private LocalDateTime dataInicio;
-	private String nomePesquisador;
+	private Pessoas pesquisador;
 
 	public Vacinas(Integer idVacina, String paisDeOrigem, EstagioDaPesquisa estagioDaPesquisa, LocalDateTime dataInicio,
-			String nomePesquisador) {
+			Pessoas pesquisador) {
 		super();
 		this.idVacina = idVacina;
 		this.paisDeOrigem = paisDeOrigem;
 		this.estagioDaPesquisa = estagioDaPesquisa;
 		this.dataInicio = dataInicio;
-		this.nomePesquisador = nomePesquisador;
+		this.pesquisador = pesquisador;
 	}
 
 	public Vacinas() {
@@ -57,12 +57,12 @@ public class Vacinas {
 		this.dataInicio = dataInicio;
 	}
 
-	public String getNomePesquisador() {
-		return nomePesquisador;
+	public Pessoas getPesquisador() {
+		return pesquisador;
 	}
 
-	public void setNomePesquisador(String nomePesquisador) {
-		this.nomePesquisador = nomePesquisador;
+	public void setPesquisador(Pessoas pesquisador) {
+		this.pesquisador = pesquisador;
 	}
 
 	private String validarData(LocalDateTime dataInicio) {

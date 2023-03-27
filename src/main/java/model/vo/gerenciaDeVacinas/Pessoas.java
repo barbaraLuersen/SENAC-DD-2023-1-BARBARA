@@ -7,11 +7,11 @@ public class Pessoas {
 	private Integer idPessoa;
 	private String nome;
 	private LocalDateTime dataNascimento;
-	private boolean sexo;
+	private char sexo;
 	private String cpf;
 	private TipoDePessoa tipoDePessoa;
 
-	public Pessoas(Integer idPessoa, String nome, LocalDateTime dataNascimento, boolean sexo, String cpf,
+	public Pessoas(Integer idPessoa, String nome, LocalDateTime dataNascimento, char sexo, String cpf,
 			TipoDePessoa tipoDePessoa) {
 		super();
 		this.idPessoa = idPessoa;
@@ -50,11 +50,11 @@ public class Pessoas {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public boolean isSexo() {
+	public char isSexo() {
 		return sexo;
 	}
 
-	public void setSexo(boolean sexo) {
+	public void setSexo(char sexo) {
 		this.sexo = sexo;
 	}
 
