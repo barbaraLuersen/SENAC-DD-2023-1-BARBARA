@@ -34,7 +34,7 @@ public class Endereco {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getCep() {
 		return cep;
 	}
@@ -83,7 +83,10 @@ public class Endereco {
 		this.estado = estado;
 	}
 
-
 	// Metodo
-
+	@Override
+	public String toString() {
+		return "Endereco [cep=" + cep + ", rua=" + rua + ", numero=" + numero + ", bairro=" + bairro + ", cidade="
+				+ cidade + ", estado=" + estado + "]";
+	}
 }

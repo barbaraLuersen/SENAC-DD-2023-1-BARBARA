@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.dao.BancoTelefonia;
 import model.vo.telefonia.Telefone;
@@ -152,7 +153,7 @@ public class TelefoneDAO {
 	}
 
 	/**
-	 * Consulta todos os telefones vinculados a um id de cliente 
+	 * Consulta todos os telefones vinculados a um id de cliente
 	 * 
 	 * @param id do cliente
 	 * 
@@ -227,5 +228,45 @@ public class TelefoneDAO {
 			BancoTelefonia.closeConnection(conexao);
 		}
 		return excluiu;
+	}
+
+	/**
+	 * Associa e ativa uma lista de telefones a um determinado cliente.
+	 * 
+	 * @param dono      o cliente que possui os telefones
+	 * @param telefones a lista de telefones
+	 */
+	public void ativarTelefones(Integer idDono, List<Telefone> telefones) {
+		for (Telefone telefoneDoCliente : telefones) {
+			telefoneDoCliente.setIdCliente(idDono);
+			telefoneDoCliente.setAtivo(true);
+			if (telefoneDoCliente.getId() > 0) {
+				// UPDATE no Telefone
+				this.atualizar(telefoneDoCliente);
+			} else {
+				// INSERT no Telefone
+				this.inserir(telefoneDoCliente);
+			}
+		}
+	}
+
+	/**
+	 * Desativa todos os telefones de um determinado cliente.
+	 * 
+	 * @param idCliente a chave primária do cliente
+	 */
+	public void desativarTelefones(int idCliente) {
+		Connection conn = BancoTelefonia.getConnection();
+		String sql = " UPDATE EXEMPLOS.TELEFONE " + " SET id_cliente=NULL, ativo=0 " + " WHERE ID_CLIENTE=? ";
+
+		PreparedStatement stmt = BancoTelefonia.getPreparedStatement(conn, sql);
+
+		try {
+			stmt.setInt(1, idCliente);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Erro ao desativar telefone.");
+			System.out.println("Erro: " + e.getMessage());
+		}
 	}
 }

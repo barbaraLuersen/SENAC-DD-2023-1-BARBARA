@@ -75,5 +75,8 @@ public class Telefone {
 	}
 
 	// Métodos
-
+	@Override
+	public String toString() {
+		return "Telefone [ddd=" + ddd + ", numero=" + numero + ", ativo=" + ativo + ", movel=" + movel + "]";
+	}
 }

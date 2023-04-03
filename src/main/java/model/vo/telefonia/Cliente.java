@@ -12,7 +12,8 @@ public class Cliente {
 	private Endereco endereco;
 
 	// Construtores
-	public Cliente(Integer idCliente, String nome, String cpf, List<Telefone> telefones, boolean ativo, Endereco endereco) {
+	public Cliente(Integer idCliente, String nome, String cpf, List<Telefone> telefones, boolean ativo,
+			Endereco endereco) {
 		super();
 		this.idCliente = idCliente;
 		this.nome = nome;
@@ -35,7 +36,7 @@ public class Cliente {
 	public void setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -76,4 +77,9 @@ public class Cliente {
 		this.endereco = endereco;
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente [nome=" + nome + ", cpf=" + cpf + ", telefones=" + telefones + ", ativo=" + ativo
+				+ ", endereco=" + endereco + "]";
+	}
 }
