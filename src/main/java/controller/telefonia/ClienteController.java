@@ -14,7 +14,7 @@ public class ClienteController {
 private ClienteBO bo = new ClienteBO();
 	
 	public Cliente inserir(Cliente novoCliente) throws CpfJaUtilizadoException, 
-			EnderecoInvalidoException {
+			EnderecoInvalidoException, CampoInvalidoException {
 		this.validarCamposObrigatorios(novoCliente);
 		return bo.inserir(novoCliente);
 	}
