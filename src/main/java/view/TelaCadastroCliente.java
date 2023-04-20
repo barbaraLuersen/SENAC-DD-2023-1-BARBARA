@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class TeleCadastroCliente {
+public class TelaCadastroCliente {
 
 	private JFrame frmNovoCliente;
 	
@@ -37,7 +37,7 @@ public class TeleCadastroCliente {
 	
 	private JLabel lblEndereco;
 	private ArrayList<Endereco> enderecos;
-	private JComboBox<?> cbEndereco;
+	private JComboBox cbEndereco;
 	
 	private JButton btnCadastrar;
 	
@@ -49,7 +49,7 @@ public class TeleCadastroCliente {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TeleCadastroCliente window = new TeleCadastroCliente();
+					TelaCadastroCliente window = new TelaCadastroCliente();
 					window.frmNovoCliente.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +62,7 @@ public class TeleCadastroCliente {
 	 * Create the application.
 	 * @throws ParseException 
 	 */
-	public TeleCadastroCliente() throws ParseException {
+	public TelaCadastroCliente() throws ParseException {
 		initialize();
 	}
 
@@ -90,10 +90,11 @@ public class TeleCadastroCliente {
 		lblCpf.setBounds(30, 87, 46, 14);
 		frmNovoCliente.getContentPane().add(lblCpf);
 		
+		////.setValueContainsLiteralCharacters(false) = Força o componente a informar somente o valor sem mascara no getValue()
 		mascaraCpf = new MaskFormatter("###.###.###-##");
 		mascaraCpf.setValueContainsLiteralCharacters(false);
 		
-		txtCpf = new JFormattedTextField();
+		txtCpf = new JFormattedTextField(mascaraCpf);
 		txtCpf.setBounds(114, 84, 251, 20);
 		frmNovoCliente.getContentPane().add(txtCpf);
 		
@@ -104,7 +105,7 @@ public class TeleCadastroCliente {
 		EnderecoController controller = new EnderecoController();
 		enderecos = (ArrayList<Endereco>) controller.consultarTodos();
 		
-		cbEndereco = new JComboBox<Object>(enderecos.toArray());
+		cbEndereco = new JComboBox(enderecos.toArray());
 		cbEndereco.setToolTipText("Selecione");
 		cbEndereco.setSelectedIndex(-1);
 		cbEndereco.setBounds(114, 137, 251, 20);

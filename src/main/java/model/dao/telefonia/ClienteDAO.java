@@ -32,15 +32,17 @@ public class ClienteDAO {
 			}
 
 			// TODO cadastrar os telefones do cliente
-			if (!novoCliente.getTelefones().isEmpty()) {
+			if (novoCliente.getTelefones() != null && !novoCliente.getTelefones().isEmpty()) {
 				TelefoneDAO telefoneDAO = new TelefoneDAO();
 				telefoneDAO.ativarTelefones(novoCliente.getIdCliente(), novoCliente.getTelefones());
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao inserir novo cliente.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			BancoTelefonia.closePreparedStatement(stmt);
+			BancoTelefonia.closeConnection(conexao);
 		}
-
 		return novoCliente;
 	}
 
@@ -69,7 +71,7 @@ public class ClienteDAO {
 
 	public boolean excluir(int id) {
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = "DELETE FROM CLIENTE WHERE ID= " + id;
+		String sql = " DELETE FROM CLIENTE WHERE ID = " + id;
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
 		int quantidadeLinhasAfetadas = 0;
@@ -93,7 +95,7 @@ public class ClienteDAO {
 	public Cliente consultarPorId(int id) {
 		Cliente clienteBuscado = null;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " select * from cliente " + " where id = ? ";
+		String sql = " SELECT * FROM cliente " + " WHERE ID = ? ";
 
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
@@ -134,7 +136,6 @@ public class ClienteDAO {
 			BancoTelefonia.closePreparedStatement(query);
 			BancoTelefonia.closeConnection(conexao);
 		}
-
 		return clientes;
 	}
 
@@ -159,7 +160,7 @@ public class ClienteDAO {
 	public boolean cpfJaUtilizado(String cpfBuscado) {
 		boolean cpfJaUtilizado = false;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " select count(*) from cliente " + " where cpf = ? ";
+		String sql = " SELECT COUNT(*) FROM cliente " + " WHERE CPF = ? ";
 
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {

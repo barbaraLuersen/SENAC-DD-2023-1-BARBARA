@@ -28,7 +28,6 @@ public class TelefoneDAO {
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " INSERT INTO TELEFONE (DDD, NUMERO, ATIVO, MOVEL, ID_CLIENTE)" + "	VALUES (?,?,?,?,?) ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatementWithPk(conexao, sql);
-
 		// EXECUTAR O INSERT
 		try {
 			query.setString(1, novoTelefone.getDdd());
@@ -72,7 +71,7 @@ public class TelefoneDAO {
 	public boolean atualizar(Telefone telefoneEditado) {
 		boolean atualizou = false;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " UPDATE TELEFONE " + "	SET IDCLIENTE = ?, DDD = ?, NUMERO = ?, ATIVO = ?, MODEL = ? "
+		String sql = " UPDATE TELEFONE " + " DDD = ?, NUMERO = ?, ATIVO = ?, MODEL = ?, SET IDCLIENTE = ? "
 				+ "	WHERE ID = ?";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
@@ -81,6 +80,7 @@ public class TelefoneDAO {
 			query.setBoolean(3, telefoneEditado.isAtivo());
 			query.setBoolean(4, telefoneEditado.isMovel());
 			query.setInt(5, telefoneEditado.getIdCliente());
+			query.setInt(6, telefoneEditado.getId());
 
 			int quantidadeLinhasAtualizadas = query.executeUpdate();
 			if (quantidadeLinhasAtualizadas > 0) {
@@ -129,8 +129,8 @@ public class TelefoneDAO {
 	 * 
 	 * @return lista de telefones ArrayList<EnderecoVO>
 	 */
-	public ArrayList<Telefone> consultarTodos() {
-		ArrayList<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
+	public List<Telefone> consultarTodos() {
+		List<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
@@ -159,14 +159,14 @@ public class TelefoneDAO {
 	 * 
 	 * @return lista de telefones ArrayList<EnderecoVO>
 	 */
-	public ArrayList<Telefone> consultarPorIdCliente(Integer id) {
-		ArrayList<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
+	public List<Telefone> consultarPorIdCliente(Integer id) {
+		List<Telefone> listaTelefonesVO = new ArrayList<Telefone>();
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " SELECT * FROM TELEFONE " + "WHERE ID_CLIENTE = ?";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
 		try {
-			query.setInt(1, 0);
+			query.setInt(1, id);
 			ResultSet resultado = query.executeQuery();
 			while (resultado.next()) {
 				Telefone telefoneConsultado = converterDeResultSetParaEntidade(resultado);
@@ -268,5 +268,27 @@ public class TelefoneDAO {
 			System.out.println("Erro ao desativar telefone.");
 			System.out.println("Erro: " + e.getMessage());
 		}
+	}
+
+	public boolean telefoneJaCadastrado(String ddd, String numero) {
+		boolean telefoneJaCadastrado = false;
+		Connection conexao = BancoTelefonia.getConnection();
+		String sql = " SELECT count(*) FROM TELEFONE " + "    WHERE DDD = ? " + " AND NUMERO = ?";
+		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
+		try {
+			query.setString(1, ddd);
+			query.setString(1, numero);
+			ResultSet resultado = query.executeQuery();
+			if (resultado.next()) {
+				int quantidadeTelefones = resultado.getInt(1);
+				telefoneJaCadastrado = quantidadeTelefones > 0;
+			}
+		} catch (SQLException erro) {
+			System.out.println("Erro ao verificar se telefone já foi cadastrado. " + "\nCausa: " + erro.getMessage());
+		} finally {
+			BancoTelefonia.closePreparedStatement(query);
+			BancoTelefonia.closeConnection(conexao);
+		}
+		return telefoneJaCadastrado;
 	}
 }
