@@ -1,7 +1,9 @@
 package executavel;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import model.dao.telefonia.ClienteDAO;
 import model.dao.telefonia.EnderecoDAO;
 import model.dao.telefonia.TelefoneDAO;
 import model.vo.telefonia.Cliente;
@@ -13,7 +15,7 @@ public class ExecutavelTelefonia {
 
 		// ----------ENDEREÇOS----------
 		// Inserir endereços
-		Endereco endereco1 = new Endereco(null, "88000123", "Mauro Ramos", "10", "Centro", "Florianópolis", "SC");
+		Endereco endereco1 = new Endereco(1, "88000123", "Mauro Ramos", "10", "Centro", "Florianópolis", "SC");
 
 		EnderecoDAO dbaDeEnderecos = new EnderecoDAO();
 		dbaDeEnderecos.inserir(endereco1);
@@ -35,19 +37,19 @@ public class ExecutavelTelefonia {
 
 		// Consultar endereço por id
 		Endereco endereco = dbaDeEnderecos.consultarPorId(1);
-		
-		if (endereco.getId()>0 && endereco.getId() != null) {
+
+		if (endereco.getId() > 0 && endereco.getId() != null) {
 			System.out.println(endereco);
 		} else {
 			System.out.println("Erro ao consultar endereço por id");
 		}
-		
+
 		// Consultar todos os endereços
 		List<Endereco> enderecos = dbaDeEnderecos.consultarTodos();
 
 		System.out.println("=============== Todos os endereços ===============");
 		for (Endereco e : enderecos) {
-			System.out.println(e);
+		System.out.println(e);
 		}
 
 		// Deletar endereço
@@ -84,8 +86,7 @@ public class ExecutavelTelefonia {
 		}
 
 		// Consultando telefone por id
-		
-		
+
 		// Consultando todos os telefones
 		List<Telefone> telefones = dbaDeTelefones.consultarTodos();
 
@@ -94,25 +95,41 @@ public class ExecutavelTelefonia {
 			System.out.println(e);
 		}
 
+		List<Telefone> telefonesDoSocrates = new ArrayList<Telefone>();
+		telefones.add(telefone1);
+		telefones.add(telefone2);
+
 		// Deletando telefone
 
-//------------------------------------------------------------------------
-//		List<Telefone> telefonesDoSocrates = new ArrayList<Telefone>();
-//		Telefone telefone1 = new Telefone("48", "32328888", true, false);
-//		telefonesDoSocrates.add(telefone1);
-//		telefonesDoSocrates.add(new Telefone("48", "98881234", true, true));
-//
-//		Cliente pele = new Cliente("Edson Arantes", "111222333", null, true, endereco1);
-//		Cliente socrates = new Cliente("Sócrates Brasileiro", "333444555", telefonesDoSocrates, true, endereco1);
-//
-//		List<Cliente> clientes = new ArrayList<Cliente>();
-//		clientes.add(pele);
-//		clientes.add(socrates);
-//
-//		System.out.print("----------Clientes da firma----------");
-//
-//		for (Cliente c : clientes) {
-//			System.out.println(c.toString());
-//		}
+		// ----------CLIENTES----------
+		// Criando clientes
+		Cliente pele = new Cliente(1, "Edson Arantes", "111222333", null, true, endereco1);
+		Cliente socrates = new Cliente(2, "Sócrates Brasileiro", "333444555", telefonesDoSocrates, true, endereco1);
+
+		//Inserindo clientes
+		ClienteDAO dbaDeClientes = new ClienteDAO();
+		dbaDeClientes.inserir(pele);
+
+		if (pele.getIdCliente() != null) {
+			System.out.println("Novo cliente cadastrado");
+		} else {
+			System.out.println("Erro ao cadastrar cliente");
+		}
+
+		dbaDeClientes.inserir(socrates);
+		if (socrates.getIdCliente() != null) {
+			System.out.println("Novo cliente cadastrado");
+		} else {
+			System.out.println("Erro ao cadastrar cliente");
+		}
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		clientes.add(pele);
+		clientes.add(socrates);
+
+		System.out.print("----------Clientes da firma----------");
+
+		for (Cliente c : clientes) {
+			System.out.println(c.toString());
+		}
 	}
 }

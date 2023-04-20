@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.dao.BancoTelefonia;
 import model.vo.telefonia.Endereco;
@@ -24,18 +25,18 @@ public class EnderecoDAO {
 	public Endereco inserir(Endereco novoEndereco) {
 		// Conectar ao banco
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " INSERT INTO ENDERECO (RUA, CEP, BAIRRO, CIDADE, ESTADO, NUMERO)" + " VALUES (?,?,?,?,?,?)";
+		String sql = " INSERT INTO ENDERECO (RUA, NUMERO, CEP, BAIRRO, CIDADE, ESTADO)" + " VALUES (?,?,?,?,?,?)";
 		PreparedStatement query = BancoTelefonia.getPreparedStatementWithPk(conexao, sql);
 // PreparedStatement é passagem por parâmetro e previne sql injection
 
 		// Executar o INSERT
 		try {
 			query.setString(1, novoEndereco.getRua());
-			query.setString(2, novoEndereco.getCep());
-			query.setString(3, novoEndereco.getBairro());
-			query.setString(4, novoEndereco.getCidade());
-			query.setString(5, novoEndereco.getEstado());
-			query.setString(6, novoEndereco.getNumero());
+			query.setString(2, novoEndereco.getNumero());
+			query.setString(3, novoEndereco.getCep());
+			query.setString(4, novoEndereco.getBairro());
+			query.setString(5, novoEndereco.getCidade());
+			query.setString(6, novoEndereco.getEstado());
 			query.execute();
 
 			// Preencher o id gerado no banco no objeto
@@ -47,11 +48,10 @@ public class EnderecoDAO {
 		} catch (SQLException e) {
 			System.out.println("\nErro ao inserir endereço. \nCausa: " + e.getMessage());
 		} finally {
+			// Fechar a conexão
 			BancoTelefonia.closePreparedStatement(query);
 			BancoTelefonia.closeConnection(conexao);
 		}
-
-		// Fechar a conexão
 		return novoEndereco;
 	}
 
@@ -64,13 +64,13 @@ public class EnderecoDAO {
 	public boolean atualizar(Endereco enderecoEditado) {
 		boolean atualizou = false;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " UPDATE ENDERECO " + " SET CEP = ?, RUA = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ? "
+		String sql = " UPDATE ENDERECO " + " RUA = ?, NUMERO = ?, SET CEP = ?, BAIRRO = ?, CIDADE = ?, ESTADO = ? "
 				+ " WHERE ID = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
-			query.setString(1, enderecoEditado.getCep());
-			query.setString(2, enderecoEditado.getRua());
-			query.setString(3, enderecoEditado.getNumero());
+			query.setString(1, enderecoEditado.getRua());
+			query.setString(2, enderecoEditado.getNumero());
+			query.setString(3, enderecoEditado.getCep());
 			query.setString(4, enderecoEditado.getBairro());
 			query.setString(5, enderecoEditado.getCidade());
 			query.setString(6, enderecoEditado.getEstado());
@@ -124,9 +124,9 @@ public class EnderecoDAO {
 	 * @param não há parâmetro
 	 * @return lista de endereços ArrayList<EnderecoVO>
 	 */
-	public ArrayList<Endereco> consultarTodos() {
-		ArrayList<Endereco> listaEnderecosVO = new ArrayList<Endereco>();
+	public List<Endereco> consultarTodos() {
 		Connection conexao = BancoTelefonia.getConnection();
+		List<Endereco> listaEnderecosVO = new ArrayList<Endereco>();
 		String sql = " SELECT * FROM ENDERECO ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
@@ -176,13 +176,11 @@ public class EnderecoDAO {
 	 */
 	public boolean excluir(int id) {
 		boolean excluiu = false;
-
 		Connection conexao = BancoTelefonia.getConnection();
 		String sql = " DELETE FROM ENDERECO " + " WHERE ID = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, id);
-
 			int quantidadeLinhasAtualizadas = query.executeUpdate();
 			excluiu = quantidadeLinhasAtualizadas > 0;
 
