@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import controller.telefonia.ClienteController;
 import controller.telefonia.TelefoneController;
@@ -19,22 +21,26 @@ import model.vo.telefonia.Telefone;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
+import javax.swing.JFormattedTextField;
 
 public class TelaCadastroTelefone {
 
 	private JFrame frmNovoTelefone;
-	private JLabel lblDdd;
-	private JTextField txtDdd;
 	private JLabel lblNumero;
-	private JTextField txtNumero;
-	private JLabel lblMovel;
-	private JCheckBox chckbxMovel;
-	private JLabel lblCliente;
-	private JComboBox cbCliente;
-	private List<Cliente> clientes;
-	private JButton btnSalvar;
 
+	private JButton btnSalvar;
+	private JLabel lblTipo;
+	private JLabel lblCliente;
+	private JRadioButton rdbtnFixo;
+	private JRadioButton rdbtnMovel;
+	private JFormattedTextField txtTelefoneFixo;
+	private JFormattedTextField txtTelefoneMovel;
+	private JComboBox cbClientes;
+	private MaskFormatter mascaraTelefoneFixo;
+	private MaskFormatter mascaraTelefoneMovel;
 
 	/**
 	 * Launch the application.
@@ -54,83 +60,76 @@ public class TelaCadastroTelefone {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @throws ParseException
 	 */
-	public TelaCadastroTelefone() {
+	public TelaCadastroTelefone() throws ParseException {
 		initialize();
+		esconderComponentes();
+	}
+
+	private void esconderComponentes() {
+		lblNumero.setVisible(false);
+		txtTelefoneFixo.setVisible(false);
+		lblCliente.setVisible(false);
+		cbClientes.setVisible(false);
+		btnSalvar.setVisible(false);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @throws ParseException
 	 */
-	private void initialize() {
+	private void initialize() throws ParseException {
 		frmNovoTelefone = new JFrame();
 		frmNovoTelefone.setTitle("Novo Telefone");
-		frmNovoTelefone.setBounds(100, 100, 400, 300);
+		frmNovoTelefone.setBounds(100, 100, 312, 298);
 		frmNovoTelefone.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmNovoTelefone.getContentPane().setLayout(null);
-		
-		lblDdd = new JLabel("DDD: ");
-		lblDdd.setBounds(32, 36, 46, 14);
-		frmNovoTelefone.getContentPane().add(lblDdd);
-		
-		txtDdd = new JTextField();
-		txtDdd.setBounds(106, 33, 249, 20);
-		frmNovoTelefone.getContentPane().add(txtDdd);
-		txtDdd.setColumns(10);
-		
-		lblNumero = new JLabel("Número: ");
-		lblNumero.setBounds(32, 82, 64, 14);
-		frmNovoTelefone.getContentPane().add(lblNumero);
-		
-		txtNumero = new JTextField();
-		txtNumero.setBounds(106, 79, 249, 20);
-		frmNovoTelefone.getContentPane().add(txtNumero);
-		txtNumero.setColumns(10);
-		
-		lblMovel = new JLabel("Móvel: ");
-		lblMovel.setBounds(32, 123, 46, 14);
-		frmNovoTelefone.getContentPane().add(lblMovel);
-		
-		chckbxMovel = new JCheckBox("(selecione se o telefone for móvel)");
-		chckbxMovel.setBounds(106, 119, 249, 20);
-		frmNovoTelefone.getContentPane().add(chckbxMovel);
-		
-		lblCliente= new JLabel("Dono: ");
-		lblCliente.setBounds(32, 169, 46, 14);
-		frmNovoTelefone.getContentPane().add(lblCliente);
-		
-		ClienteController controller = new ClienteController();
-		clientes = (ArrayList<Cliente>) controller.consultarTodos();
-		
-		cbCliente= new JComboBox(clientes.toArray());
-		cbCliente.setToolTipText("Selecione");
-		cbCliente.setSelectedIndex(-1);
-		cbCliente.setBounds(106, 165, 249, 20);
-		frmNovoTelefone.getContentPane().add(cbCliente);
-		
-		btnSalvar = new JButton("Salvar");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Telefone novoTelefone = new Telefone();
-				Cliente clienteSelecionado = (Cliente) cbCliente.getSelectedItem();
-				if (clienteSelecionado != null) {
-					novoTelefone.setIdCliente(clienteSelecionado.getIdCliente());
-					novoTelefone.setAtivo(true);
-				} else {
-					novoTelefone.setAtivo(false);
-				}
-				TelefoneController controller = new TelefoneController();
-				try {
-					controller.inserir(novoTelefone);
 
-					JOptionPane.showMessageDialog(null, "Telefone cadastrado com sucesso!", "Cadastro com sucesso",
-							JOptionPane.INFORMATION_MESSAGE);
-				} catch (CampoInvalidoException ex) {
-					JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-		btnSalvar.setBounds(246, 209, 109, 23);
+		lblTipo = new JLabel("Tipo: ");
+		lblTipo.setBounds(25, 42, 46, 14);
+		frmNovoTelefone.getContentPane().add(lblTipo);
+
+		lblNumero = new JLabel("Número: ");
+		lblNumero.setBounds(25, 93, 46, 14);
+		frmNovoTelefone.getContentPane().add(lblNumero);
+
+		lblCliente = new JLabel("Cliente: ");
+		lblCliente.setBounds(25, 150, 46, 14);
+		frmNovoTelefone.getContentPane().add(lblCliente);
+
+		ButtonGroup grupo = new ButtonGroup();
+		
+		
+		rdbtnFixo = new JRadioButton("Fixo");
+		rdbtnFixo.setBounds(81, 38, 61, 23);
+		frmNovoTelefone.getContentPane().add(rdbtnFixo);
+
+		rdbtnMovel = new JRadioButton("Móvel");
+		rdbtnMovel.setBounds(200, 38, 69, 23);
+		frmNovoTelefone.getContentPane().add(rdbtnMovel);
+
+		mascaraTelefoneFixo = new MaskFormatter("(##)####-####");
+		
+		
+		mascaraTelefoneFixo.setValueContainsLiteralCharacters(false);
+
+		txtTelefoneFixo = new JFormattedTextField();
+		txtTelefoneFixo.setBounds(81, 90, 188, 20);
+		frmNovoTelefone.getContentPane().add(txtTelefoneFixo);
+
+		txtTelefoneMovel = new JFormattedTextField();
+		txtTelefoneMovel.setBounds(81, 90, 188, 20);
+		frmNovoTelefone.getContentPane().add(txtTelefoneMovel);
+
+		cbClientes = new JComboBox();
+		cbClientes.setBounds(81, 146, 188, 22);
+		frmNovoTelefone.getContentPane().add(cbClientes);
+
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(180, 203, 89, 23);
 		frmNovoTelefone.getContentPane().add(btnSalvar);
 	}
 }
