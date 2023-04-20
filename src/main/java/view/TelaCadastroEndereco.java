@@ -46,7 +46,7 @@ public class TelaCadastroEndereco {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaCadastroEndereco window = new TelaCadastroEndereco();
+					TelaCadastroEndereco window = new TelaCadastroEndereco(null);
 					window.frmCadastroDeEndereco.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,8 +57,9 @@ public class TelaCadastroEndereco {
 
 	/**
 	 * Create the application.
+	 * @param enderecoSelecionado 
 	 */
-	public TelaCadastroEndereco() throws ParseException{
+	public TelaCadastroEndereco(Endereco enderecoSelecionado) throws ParseException{
 		initialize();
 	}
 
