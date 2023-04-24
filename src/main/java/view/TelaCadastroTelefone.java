@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,10 +8,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import controller.telefonia.ClienteController;
@@ -19,15 +23,6 @@ import model.exceptions.telefonia.CampoInvalidoException;
 import model.exceptions.telefonia.TelefoneJaUtilizadoException;
 import model.vo.telefonia.Cliente;
 import model.vo.telefonia.Telefone;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.ButtonGroup;
-import javax.swing.JFormattedTextField;
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.JFormattedTextField;
-import java.awt.Color;
 
 public class TelaCadastroTelefone {
 

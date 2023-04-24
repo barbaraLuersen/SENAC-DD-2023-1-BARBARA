@@ -100,7 +100,7 @@ public class EnderecoDAO {
 	public Endereco consultarPorId(int id) {
 		Endereco enderecoConsultado = null;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " SELECT * FROM ENDERECO " + " WHERE ID = ? ";
+		String sql = " SELECT * FROM ENDERECO " + " WHERE IDENDERECO = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, id);
@@ -158,7 +158,7 @@ public class EnderecoDAO {
 	 */
 	private Endereco converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
 		Endereco enderecoConsultado = new Endereco();
-		enderecoConsultado.setId(resultado.getInt("id"));
+		enderecoConsultado.setId(resultado.getInt("idEndereco"));
 		enderecoConsultado.setCep(resultado.getString("cep"));
 		enderecoConsultado.setRua(resultado.getString("rua"));
 		enderecoConsultado.setBairro(resultado.getString("bairro"));
@@ -177,7 +177,7 @@ public class EnderecoDAO {
 	public boolean excluir(int id) {
 		boolean excluiu = false;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " DELETE FROM ENDERECO " + " WHERE ID = ? ";
+		String sql = " DELETE FROM ENDERECO " + " WHERE IDENDERECO = ? ";
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
 			query.setInt(1, id);

@@ -48,7 +48,7 @@ public class ClienteDAO {
 
 	public boolean atualizar(Cliente cliente) {
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " UPDATE CLIENTE SET NOME=?, CPF=?, ID_ENDERECO=?, ATIVO=? " + " WHERE ID = ?";
+		String sql = " UPDATE CLIENTE SET NOME=?, CPF=?, ID_ENDERECO=?, ATIVO=? " + " WHERE IDCLIENTE = ?";
 		PreparedStatement stmt = BancoTelefonia.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
 		try {
@@ -71,7 +71,7 @@ public class ClienteDAO {
 
 	public boolean excluir(int id) {
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " DELETE FROM CLIENTE WHERE ID = " + id;
+		String sql = " DELETE FROM CLIENTE WHERE IDCLIENTE = " + id;
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 
 		int quantidadeLinhasAfetadas = 0;
@@ -95,7 +95,7 @@ public class ClienteDAO {
 	public Cliente consultarPorId(int id) {
 		Cliente clienteBuscado = null;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " SELECT * FROM cliente " + " WHERE ID = ? ";
+		String sql = " SELECT * FROM cliente " + " WHERE IDCLIENTE = ? ";
 
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {
@@ -125,7 +125,7 @@ public class ClienteDAO {
 		try {
 			ResultSet resultado = query.executeQuery();
 
-			if (resultado.next()) {
+			while (resultado.next()) {
 				Cliente clienteBuscado = montarClienteComResultadoDoBanco(resultado);
 				clientes.add(clienteBuscado);
 			}
@@ -141,7 +141,7 @@ public class ClienteDAO {
 
 	private Cliente montarClienteComResultadoDoBanco(ResultSet resultado) throws SQLException {
 		Cliente clienteBuscado = new Cliente();
-		clienteBuscado.setIdCliente(resultado.getInt("id"));
+		clienteBuscado.setIdCliente(resultado.getInt("idCliente"));
 		clienteBuscado.setNome(resultado.getString("nome"));
 		clienteBuscado.setCpf(resultado.getString("cpf"));
 		clienteBuscado.setAtivo(resultado.getBoolean("ativo"));
@@ -183,7 +183,7 @@ public class ClienteDAO {
 	public int contarClientesQueResidemNoEndereco(Integer idEndereco) {
 		int totalClientesDoEnderecoBuscado = 0;
 		Connection conexao = BancoTelefonia.getConnection();
-		String sql = " select count(id) from cliente " + " where id_endereco = ? ";
+		String sql = " select count(idCliente) from cliente " + " where id_endereco = ? ";
 
 		PreparedStatement query = BancoTelefonia.getPreparedStatement(conexao, sql);
 		try {

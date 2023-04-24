@@ -98,7 +98,7 @@ public class TelaCadastroCliente {
 		frmNovoCliente.getContentPane().add(txtCpf);
 		
 		lblEndereco = new JLabel("Endereço: ");
-		lblEndereco.setBounds(30, 141, 57, 14);
+		lblEndereco.setBounds(30, 141, 74, 14);
 		frmNovoCliente.getContentPane().add(lblEndereco);
 		
 		EnderecoController controller = new EnderecoController();

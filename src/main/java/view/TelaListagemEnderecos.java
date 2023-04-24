@@ -38,11 +38,6 @@ public class TelaListagemEnderecos {
 	// Métodos usados no JTable
 	private void limparTabela() {
 		tblEnderecos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
-		tblEnderecos = new JTable(tblEnderecos.getModel()) {
-			public boolean isCellEditable(int rowIndex, int colIndex) {
-				return false;
-			}
-		};
 	}
 
 	private void atualizarTabelaEnderecos() {
@@ -96,7 +91,7 @@ public class TelaListagemEnderecos {
 	private void initialize() {
 		frmListagemDeEndereos = new JFrame();
 		frmListagemDeEndereos.setTitle("Listagem de Endereços");
-		frmListagemDeEndereos.setBounds(100, 100, 450, 300);
+		frmListagemDeEndereos.setBounds(100, 100, 470, 300);
 		frmListagemDeEndereos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmListagemDeEndereos.getContentPane().setLayout(null);
 
@@ -154,7 +149,7 @@ public class TelaListagemEnderecos {
 
 		tblEnderecos = new JTable();
 		this.limparTabela();
-		tblEnderecos.setBounds(15, 70, 655, 350);
+		tblEnderecos.setBounds(23, 69, 409, 147);
 
 		// Evento de clique em uma linha da tabela
 		// Habilita/desabilita os botões "Editar" e "Excluir"
@@ -164,8 +159,8 @@ public class TelaListagemEnderecos {
 				int indiceSelecionado = tblEnderecos.getSelectedRow();
 
 				if (indiceSelecionado > 0) {
-					// Primeira linha da tabela contém o cabeçalho, por isso o '+1'
-					enderecoSelecionado = enderecos.get(indiceSelecionado + 1);
+					// Primeira linha da tabela contém o cabeçalho, por isso o '-1'
+					enderecoSelecionado = enderecos.get(indiceSelecionado - 1);
 					btnEditar.setEnabled(true);
 					btnExcluir.setEnabled(true);
 				} else {

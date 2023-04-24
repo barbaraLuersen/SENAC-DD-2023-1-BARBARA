@@ -16,7 +16,7 @@ public class BancoTelefonia {
 	private static final String CONEXAO = "jdbc:mysql://localhost:3306/" + BANCODADOS
 			+ "?useTimezone=true&serverTimezone=UTC";
 	private static final String USER = "root";
-	private static final String PASSWORD = "admin";
+	private static final String PASSWORD = "root";
 
 	public static Connection getConnection() {
 		try {

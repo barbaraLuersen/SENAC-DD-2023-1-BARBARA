@@ -35,6 +35,9 @@ public class TelaCadastroEndereco {
 	private JButton btnCadastrar;
 	private JComboBox cbEstado;
 
+	// Objeto usado para armazenar o endereço que será criado ou editado
+	private Endereco endereco;
+
 	// TODO chamar API ou backend futuramente
 	private String[] estados = { "PR", "RS", "SC" };
 	private MaskFormatter mascaraCep;
@@ -46,6 +49,7 @@ public class TelaCadastroEndereco {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Inicia a tela com endereco nulo
 					TelaCadastroEndereco window = new TelaCadastroEndereco(null);
 					window.frmCadastroDeEndereco.setVisible(true);
 				} catch (Exception e) {
@@ -56,17 +60,20 @@ public class TelaCadastroEndereco {
 	}
 
 	/**
-	 * Create the application.
-	 * @param enderecoSelecionado 
+	 * Create the application. Método construtor: possui o mesmo nome da classe e
+	 * não tem retorno
+	 * 
+	 * @param enderecoSelecionado
 	 */
-	public TelaCadastroEndereco(Endereco enderecoSelecionado) throws ParseException{
+	public TelaCadastroEndereco(Endereco enderecoSelecionado) throws ParseException {
+		this.endereco = enderecoSelecionado;
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() throws ParseException{
+	private void initialize() throws ParseException {
 		frmCadastroDeEndereco = new JFrame();
 		frmCadastroDeEndereco.setTitle("Cadastro de Endereço");
 		frmCadastroDeEndereco.setBounds(100, 100, 375, 250);
@@ -81,7 +88,7 @@ public class TelaCadastroEndereco {
 		mascaraCep.setValueContainsLiteralCharacters(false);
 
 		txtCep = new JFormattedTextField(mascaraCep);
-		txtCep.setBounds(60, 10, 275, 20);
+		txtCep.setBounds(80, 10, 255, 20);
 		frmCadastroDeEndereco.getContentPane().add(txtCep);
 		txtCep.setColumns(10);
 
@@ -106,51 +113,65 @@ public class TelaCadastroEndereco {
 		frmCadastroDeEndereco.getContentPane().add(lblEstado);
 
 		txtRua = new JTextField();
-		txtRua.setBounds(60, 35, 275, 20);
+		txtRua.setBounds(80, 35, 255, 20);
 		frmCadastroDeEndereco.getContentPane().add(txtRua);
 		txtRua.setColumns(10);
 
 		txtBairro = new JTextField();
 		txtBairro.setColumns(10);
-		txtBairro.setBounds(60, 60, 275, 20);
+		txtBairro.setBounds(80, 60, 255, 20);
 		frmCadastroDeEndereco.getContentPane().add(txtBairro);
 
 		txtCidade = new JTextField();
 		txtCidade.setColumns(10);
-		txtCidade.setBounds(60, 85, 275, 20);
+		txtCidade.setBounds(80, 85, 255, 20);
 		frmCadastroDeEndereco.getContentPane().add(txtCidade);
 
 		txtNumero = new JTextField();
 		txtNumero.setColumns(10);
-		txtNumero.setBounds(60, 110, 275, 20);
+		txtNumero.setBounds(80, 110, 255, 20);
 		frmCadastroDeEndereco.getContentPane().add(txtNumero);
 
 		cbEstado = new JComboBox(estados);
 		cbEstado.setToolTipText("Selecione");
 		cbEstado.setSelectedIndex(-1);
-		cbEstado.setBounds(60, 135, 275, 22);
+		cbEstado.setBounds(80, 135, 255, 22);
 		frmCadastroDeEndereco.getContentPane().add(cbEstado);
 
 		btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Endereco novoEndereco = new Endereco();
+				boolean edicao = false;
+				if (endereco == null) {
+					// Cadastro de novo endereco
+					endereco = new Endereco();
+				} else {
+					// Edição de endereço passado por parâmetro no construtor
+					edicao = true;
+				}
 				try {
 					String cepSemMascara = (String) mascaraCep.stringToValue(txtCep.getText()); // CEP sem mascara
-					novoEndereco.setCep(cepSemMascara); 
-					novoEndereco.setRua(txtRua.getText());
-					novoEndereco.setNumero(txtNumero.getText());
-					novoEndereco.setBairro(txtBairro.getText());
-					novoEndereco.setCidade(txtCidade.getText());
-					novoEndereco.setEstado((String) cbEstado.getSelectedItem());
-				} catch (ParseException ex) {
-					JOptionPane.showMessageDialog(null, "Erro ao converter o CEP", "Erro", JOptionPane.ERROR_MESSAGE);
+					endereco.setCep(cepSemMascara);
+					endereco.setRua(txtRua.getText());
+					endereco.setNumero(txtNumero.getText());
+					endereco.setBairro(txtBairro.getText());
+					endereco.setCidade(txtCidade.getText());
+					endereco.setEstado((String) cbEstado.getSelectedItem());
+				} catch (ParseException e) {
+					JOptionPane.showMessageDialog(null, "Erro ao converter o CEP ", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 				EnderecoController controller = new EnderecoController();
 				try {
-					controller.inserir(novoEndereco);
-					JOptionPane.showMessageDialog(null, "Endereço cadastrado com sucesso! ", "Sucesso",
+					// Alterado aqui para contemplar tanto edição quanto cadastro de endereço
+					if (edicao) {
+						controller.atualizar(endereco);
+					} else {
+						controller.inserir(endereco);
+					}
+					JOptionPane.showMessageDialog(null,
+							"Endereço: " + (edicao ? " atualizado " : " criado ") + "com sucesso! ", "Sucesso",
 							JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (CampoInvalidoException e) {
 					JOptionPane.showMessageDialog(null, "Preencha os seguintes campos: \n" + e.getMessage(), "Atenção",
 							JOptionPane.WARNING_MESSAGE);
@@ -159,7 +180,16 @@ public class TelaCadastroEndereco {
 		});
 		btnCadastrar.setBounds(130, 170, 100, 23);
 		frmCadastroDeEndereco.getContentPane().add(btnCadastrar);
+
+		// Preenche os campos na tela (binding)
+		if (endereco != null) {
+			txtCep.setText(endereco.getCep());
+			txtRua.setText(endereco.getRua());
+			txtNumero.setText(endereco.getNumero());
+			txtBairro.setText(endereco.getBairro());
+			txtCidade.setText(endereco.getCidade());
+			cbEstado.setSelectedItem(endereco.getEstado());
+		}
+		frmCadastroDeEndereco.setVisible(true);
 	}
 }
-
-

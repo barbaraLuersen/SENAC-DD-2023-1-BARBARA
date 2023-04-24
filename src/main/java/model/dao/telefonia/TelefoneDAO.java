@@ -193,12 +193,12 @@ public class TelefoneDAO {
 	 */
 	private Telefone converterDeResultSetParaEntidade(ResultSet resultado) throws SQLException {
 		Telefone telefoneConsultado = new Telefone();
-		telefoneConsultado.setId(resultado.getInt("id"));
+		telefoneConsultado.setId(resultado.getInt("idTelefone"));
 		telefoneConsultado.setDdd(resultado.getString("ddd"));
 		telefoneConsultado.setNumero(resultado.getString("numero"));
 		telefoneConsultado.setAtivo(resultado.getBoolean("ativo"));
 		telefoneConsultado.setMovel(resultado.getBoolean("movel"));
-		telefoneConsultado.setIdCliente(resultado.getInt("idCliente"));
+		telefoneConsultado.setIdCliente(resultado.getInt("id_Cliente"));
 		return telefoneConsultado;
 	}
 

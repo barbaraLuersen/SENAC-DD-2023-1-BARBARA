@@ -79,11 +79,6 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return "Cliente: " 
-	+ "\nNome: " + this.getNome() 
-	+ "\nCPF: " + this.getCpf() 
-	+ "\nTelefones: " + this.getTelefones() 
-	+ "\nAtivo: " + this.isAtivo()
-	+ "\nEndereço: " + this.getEndereco();
+		return "NOME: " + this.getNome() + "\n CPF: " + this.getCpf();
 	}
 }
