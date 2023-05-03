@@ -23,10 +23,12 @@ public class ClienteDAO {
 			stmt.setInt(3, novoCliente.getEndereco().getId());
 			stmt.setBoolean(4, novoCliente.isAtivo());
 			// stmt.setDate(5, java.sql.Date.valueOf(novoCliente.getDataNascimento()));
+			
 			stmt.execute();
 
 			// Preencher o id gerado no banco no objeto
 			ResultSet resultado = stmt.getGeneratedKeys();
+			
 			if (resultado.next()) {
 				novoCliente.setIdCliente(resultado.getInt(1));
 			}
