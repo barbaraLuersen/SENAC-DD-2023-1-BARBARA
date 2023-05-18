@@ -7,6 +7,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MenuTelefonia {
 
@@ -72,6 +74,16 @@ public class MenuTelefonia {
 		menuBar.add(mnCliente);
 		
 		mntmCadastrarCliente = new JMenuItem("Cadastrar");
+		mntmCadastrarCliente.addActionListener(new ActionListener() {
+			private PainelCadastroCliente painelCadastroCliente;
+
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroCliente = new PainelCadastroCliente();
+				painelCadastroCliente.setVisible(true);
+				frmMenuTelefonia.setContentPane(painelCadastroCliente);
+				frmMenuTelefonia.pack();
+			}
+		});
 		mntmCadastrarCliente.setIcon(new ImageIcon(MenuTelefonia.class.getResource("/icones/Icones/Cliente/icons8-adicionar-usuário-masculino-32.png")));
 		mnCliente.add(mntmCadastrarCliente);
 		
@@ -84,6 +96,27 @@ public class MenuTelefonia {
 		mnCliente.add(mntmAtualizarCliente);
 		
 		mntmListarClientes = new JMenuItem("Listar Clientes");
+		mntmListarClientes.addActionListener(new ActionListener() {
+			private PainelCadastroCliente painelListagemCliente;
+
+			public void actionPerformed(ActionEvent e) {
+				painelListagemCliente = new PainelCadastroCliente();
+				painelListagemCliente.getBtnEditar.addActionLstener(new ActionListener() {
+					
+					private PainelCadastroCliente painelCadastroCliente;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						painelCadastroCliente = new PainelCadastroCliente(PainelCadastroCliente.getClienteSelecionado());
+						painelCadastroCliente.setVisible(true);
+						frmMenuTelefonia.setContentPane(painelCadastroCliente);
+						frmMenuTelefonia.pack();
+					}
+				});
+				painelListagemCliente.setVisible(true);
+				frmMenuTelefonia.setContentPane(painelListagemCliente);
+			}
+		});
 		mntmListarClientes.setIcon(new ImageIcon(MenuTelefonia.class.getResource("/icones/Icones/Sobre/icons8-lista-de-características-32.png")));
 		mnCliente.add(mntmListarClientes);
 		
